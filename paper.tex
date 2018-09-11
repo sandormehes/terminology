@@ -7,7 +7,7 @@
 \usepackage{graphicx}
 \usepackage[english]{babel}
 \usepackage{ragged2e}
-\usepackage[]{units}
+\usepackage{siunitx}
 \usepackage{enumitem}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -20,6 +20,7 @@
 
 \setlength{\textwidth}{17cm}
 \setlength{\oddsidemargin}{-4mm}
+\setlength{\headheight}{15pt}
 
 \pagestyle{fancy}
 \fancyhf{}
@@ -34,6 +35,7 @@
 \center{\textbf{\large Transmission of High Quality Audio over IP Networks}}
 
 \justify{
+% ------------------------------------------------------------------------------
 \section{General Concept of Streaming}
 \tikzstyle{decision answer}=[near start,color=black]
 \tikzstyle{decision} = [diamond, draw, fill=blue!20,
@@ -41,8 +43,6 @@
 \tikzstyle{block} = [rectangle, draw, fill=blue!20,
     text width=6em, text centered, rounded corners, minimum height=2em]
 \tikzstyle{line} = [draw, very thick, color=black!50, -latex']
-\tikzstyle{cloud} = [draw, ellipse,fill=cyan!20, node distance=2.5cm,
-    minimum height=2em]
 
 \begin{center}
     \begin{tikzpicture}[scale=2, node distance = 1.5cm, auto]
@@ -53,7 +53,7 @@
         \node [block, left of=compression, node distance=4.5cm, , fill=yellow!20] (digital) {Digital Source};
         \node [block, below of=compression, text width=10em] (storage) {Storage (Temp/Perm)};
         \node [block, below of=storage, fill=red!20, text width=10em] (server) {Primary/Streaming Server};
-        \node [block, right of=server, node distance=4.5cm, fill=gray!20] (protocol) {Protocol: AES67/Dante};
+        \node [block, right of=server, node distance=4.5cm, fill=gray!20, text width=6.5em] (protocol) {Protocol: AES67/Dante};
         \node [block, below of=server, fill=red!20, text width=12em] (net) {Net Transport (Internet)};
         \node [block, below of=net, fill=green!20] (receiver) {Receiver};
         \node [block, below of=receiver, fill=green!20] (buffer) {Buffer};
@@ -77,8 +77,6 @@
         \path [line] (wave) -- (dac);
         \path [line] (dac) -- (out);
         \path [line] (server) -- (protocol);
-        % \path [line] (identify) -- (evaluate);
-        % \path [line] (evaluate) -- (decide);
         % \path [line] (decide) -| node [near start, color=black] {yes} (update);
         % \path [line] (update) |- (identify);
         % \path [line] (decide) -- node [, color=black] {no}(stop);
@@ -88,24 +86,30 @@
     \end{tikzpicture}
 \end{center}
 
-\section{Long Term Goals}
+% ------------------------------------------------------------------------------
+% \section{Long Term Goals}
+% \begin{itemize}
+%     \item
+% \end{itemize}
+
+% ------------------------------------------------------------------------------
+\section{Issues to Be Addressed}
 \begin{itemize}
-    \item
+  \item the audio quality reduction is already noticable at \SI{25}{\milli\second} delay
+  \item secure acoustical network
 \end{itemize}
 
-\section{Issues to Be Addressed}
-
 \subsection{Overall Challenges}
-
 \begin{itemize}
     \item low end-to-end (overall) delay in order to have high Quality of Experience (QoE)
     \item dealing with varying bandwidth (system scalability)
+    \item high quality audio
 \end{itemize}
 
 \subsection{Client}
 \begin{itemize}
     \item encoder: hardware or software
-    \item encoder optimisation: it may contribute to the total delay
+    \item encoder optimisation: it may contribute to the total delay if not optimised properly
     \item error protection
 \end{itemize}
 \subsection{Transport}
@@ -116,19 +120,21 @@
     \begin{itemize}
         \item better quality --- higher broadband speed
         \item preferably loseless compression
+        \item perceptual codec(?)
     \end{itemize}
     \item error concealment: packet loss replaced by the decoder
     \item scalable format --- same media stream should be used on wide range of devices to avoid transcoding (which will increase overall delay)
 \end{itemize}
-AES67 is a briding protocol between Ravenna, Dante, etc \ldots
+AES67 is a briding protocol between Ravenna, Dante, etc\ldots
 
+% ------------------------------------------------------------------------------
 \section{First Iteration}
 \begin{itemize}
     \item stereo in, stereo out
     \item no hardware involved
     \item plug-in format (VST and/or AU)
     \item using the same network, not over the internet
-    \item loseless coding
+    \item loseless compression
 \end{itemize}
 
 \noindent
@@ -138,7 +144,7 @@ AES67 is a briding protocol between Ravenna, Dante, etc \ldots
     \item cross-platform development tools (such as \href{https://cmake.org/}{CMake})
     \item visual feedback (depends on the user's environment)
 \end{itemize}
-Useful example: \href{https://github.com/vgorloff/VST3NetSend}{VST3NetSend} on GitHub
+Useful example: \href{https://github.com/vgorloff/VST3NetSend}{VST3NetSend}\footnote{\url{https://github.com/vgorloff/VST3NetSend}} on GitHub
 }
 
 \end{document}
